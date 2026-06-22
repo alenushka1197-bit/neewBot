@@ -13,8 +13,11 @@ from dotenv import load_dotenv
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("bot.log"), logging.StreamHandler()],
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('bot.log'),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger(__name__)
 
@@ -57,51 +60,51 @@ PRODUCTS = {
         "name": "Индивидуальная программа тренировок и питания",
         "price": 350000,
         "description": "Индивидуальная программа тренировок и питания под ваши цели.",
-        "delivery_text": "🎉 Спасибо за покупку программы тренировок и питания! Напиши мне в ЛС: @{} и я отправлю программу в течение 24 часов.",
+        "delivery_text": "🎉 Спасибо за покупку программы тренировок и питания! Напиши мне в ЛС: @{} и я отправлю программу в течение 24 часов."
     },
     "program_middle": {
         "name": "Программа для среднего уровня",
         "price": 14900,
         "description": "Программа для тренирующихся 3-12 месяцев. 6 недель, прогрессия нагрузок.",
-        "delivery_text": "🎉 Спасибо за покупку программы для среднего уровня! Напиши мне в ЛС: @{} и я отправлю программу в течение 24 часов.",
+        "delivery_text": "🎉 Спасибо за покупку программы для среднего уровня! Напиши мне в ЛС: @{} и я отправлю программу в течение 24 часов."
     },
     "program_advanced": {
         "name": "Программа для спортсменов",
         "price": 19900,
         "description": "Продвинутая программа с периодизацией. Для опытных спортсменов.",
-        "delivery_text": "🎉 Спасибо за покупку программы для спортсменов! Напиши мне в ЛС: @{} и я свяжусь с тобой для индивидуальной настройки.",
+        "delivery_text": "🎉 Спасибо за покупку программы для спортсменов! Напиши мне в ЛС: @{} и я свяжусь с тобой для индивидуальной настройки."
     },
     # Личное ведение
     "personal_1month": {
         "name": "Личное ведение — 1 месяц",
         "price": 1200000,
         "description": "Индивидуальное сопровождение на месяц. Программа, питание, обратная связь.",
-        "delivery_text": "🎉 Ты приобрел месяц личного ведения! Напиши мне в ЛС: @{} чтобы начать работу.",
+        "delivery_text": "🎉 Ты приобрел месяц личного ведения! Напиши мне в ЛС: @{} чтобы начать работу."
     },
     "personal_3month": {
         "name": "Личное ведение — 3 месяца",
         "price": 3000000,
         "description": "Полное сопровождение на 3 месяца.",
-        "delivery_text": "🎉 Ты выбрал 3 месяца личного ведения! Напиши мне в ЛС: @{} и мы начнём трансформацию!",
+        "delivery_text": "🎉 Ты выбрал 3 месяца личного ведения! Напиши мне в ЛС: @{} и мы начнём трансформацию!"
     },
     "personal_6month": {
         "name": "Личное ведение — 6 месяцев",
         "price": 5400000,
         "description": "Полная трансформация за полгода.",
-        "delivery_text": "🎉 Полгода личного ведения — это мощный шаг к новому себе! Напиши мне в ЛС: @{} и мы начнём!",
+        "delivery_text": "🎉 Полгода личного ведения — это мощный шаг к новому себе! Напиши мне в ЛС: @{} и мы начнём!"
     },
     "personal_12month": {
         "name": "Личное ведение — 12 месяцев",
         "price": 10800000,
         "description": "Максимальный тариф. Полная трансформация за год.",
-        "delivery_text": "🎉 Год личного ведения — это мощный шаг к новому себе! Напиши мне в ЛС: @{} и мы начнём!",
+        "delivery_text": "🎉 Год личного ведения — это мощный шаг к новому себе! Напиши мне в ЛС: @{} и мы начнём!"
     },
     # Онлайн консультация
     "consult_video": {
         "name": "Онлайн консультация",
         "price": 400000,
         "description": 'Онлайн консультация "Разбор под ключ"',
-        "delivery_text": "🎉 Оплата за онлайн консультацию получена! Напиши мне в ЛС: @{} и мы начнём!",
+        "delivery_text": "🎉 Оплата за онлайн консультацию получена! Напиши мне в ЛС: @{} и мы начнём!"
     },
 }
 
@@ -184,7 +187,6 @@ CONTACT_TEXT = """
 # ========== КЛАВИАТУРЫ ==========
 # ========================================
 
-
 def main_menu():
     """Главное меню"""
     keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
@@ -195,7 +197,6 @@ def main_menu():
     keyboard.add(btn1, btn2, btn3, btn4)
     return keyboard
 
-
 def programs_submenu():
     """Подменю Программы тренировок"""
     keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
@@ -205,7 +206,6 @@ def programs_submenu():
     btn_back = types.KeyboardButton("🔙 Назад в главное меню")
     keyboard.add(btn1, btn_back)
     return keyboard
-
 
 def personal_submenu():
     """Подменю Личное ведение"""
@@ -218,7 +218,6 @@ def personal_submenu():
     keyboard.add(btn1, btn2, btn3, btn4, btn_back)
     return keyboard
 
-
 def consult_submenu():
     """Подменю Онлайн консультация"""
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
@@ -227,7 +226,6 @@ def consult_submenu():
     keyboard.add(btn1, btn_back)
     return keyboard
 
-
 def contact_submenu():
     """Подменю Связь со мной"""
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
@@ -235,34 +233,31 @@ def contact_submenu():
     keyboard.add(btn_back)
     return keyboard
 
-
 # ========================================
 # ========== ОТПРАВКА СООБЩЕНИЙ ==========
 # ========================================
 
-
-def safe_send_message(chat_id, text, parse_mode="HTML", reply_markup=None):
+def safe_send_message(chat_id, text, parse_mode='HTML', reply_markup=None):
     """Безопасная отправка сообщения"""
     try:
         return bot.send_message(
-            chat_id, text, parse_mode=parse_mode, reply_markup=reply_markup
+            chat_id,
+            text,
+            parse_mode=parse_mode,
+            reply_markup=reply_markup
         )
     except Exception as e:
         logger.error(f"Ошибка при отправке: {e}")
         return None
 
-
 # ========================================
 # ========== НОВАЯ ФУНКЦИЯ: УВЕДОМЛЕНИЕ О НЕУДАЧНОЙ ОПЛАТЕ ==========
 # ========================================
 
-
-def notify_trainer_payment_failed(
-    user_id, user_name, product_name, amount, error_message
-):
+def notify_trainer_payment_failed(user_id, user_name, product_name, amount, error_message):
     """
     Отправляет уведомление тренеру о неудачной оплате
-
+    
     Args:
         user_id: ID пользователя
         user_name: Имя пользователя
@@ -284,36 +279,38 @@ def notify_trainer_payment_failed(
 
 ❗️ Проверь настройки платежей или свяжись с пользователем.
 """
-
+        
         # Отправляем тренеру
-        bot.send_message(YOUR_TELEGRAM_ID, failed_text, parse_mode="Markdown")
-
-        logger.info(
-            f"Уведомление о неудачной оплате отправлено тренеру. Пользователь: {user_id}"
+        bot.send_message(
+            YOUR_TELEGRAM_ID,
+            failed_text,
+            parse_mode='Markdown'
         )
-
+        
+        logger.info(f"Уведомление о неудачной оплате отправлено тренеру. Пользователь: {user_id}")
+        
     except Exception as e:
         logger.error(f"Ошибка при отправке уведомления о неудачной оплате: {e}")
-
 
 # ========================================
 # ========== КОМАНДЫ ==========
 # ========================================
 
-
-@bot.message_handler(commands=["start"])
+@bot.message_handler(commands=['start'])
 def send_welcome(message):
     """Обработчик команды /start"""
     try:
         logger.info(f"Пользователь {message.from_user.id} запустил бота")
         safe_send_message(
-            message.chat.id, WELCOME_TEXT, parse_mode="HTML", reply_markup=main_menu()
+            message.chat.id,
+            WELCOME_TEXT,
+            parse_mode='HTML',
+            reply_markup=main_menu()
         )
     except Exception as e:
         logger.error(f"Ошибка в send_welcome: {e}")
 
-
-@bot.message_handler(commands=["help"])
+@bot.message_handler(commands=['help'])
 def send_help(message):
     """Обработчик команды /help"""
     help_text = """
@@ -338,14 +335,15 @@ def send_help(message):
 👇 Используй кнопки меню
 """
     safe_send_message(
-        message.chat.id, help_text, parse_mode="HTML", reply_markup=main_menu()
+        message.chat.id,
+        help_text,
+        parse_mode='HTML',
+        reply_markup=main_menu()
     )
-
 
 # ========================================
 # ========== ОБРАБОТЧИК ТЕКСТА ==========
 # ========================================
-
 
 @bot.message_handler(func=lambda message: True)
 def handle_messages(message):
@@ -354,41 +352,27 @@ def handle_messages(message):
         text = message.text
         chat_id = message.chat.id
         user_id = message.from_user.id
-
+        
         # Если пользователь в режиме "Написать мне" - пропускаем
         if user_id in user_states and user_states[user_id] == "waiting_for_message":
             return
 
         # ----- ГЛАВНОЕ МЕНЮ -----
         if text == "📋 Программы тренировок":
-            safe_send_message(
-                chat_id,
-                PROGRAMS_TEXT,
-                parse_mode="HTML",
-                reply_markup=programs_submenu(),
-            )
+            safe_send_message(chat_id, PROGRAMS_TEXT, parse_mode='HTML', reply_markup=programs_submenu())
             return
 
         if text == "👤 Личное ведение":
-            safe_send_message(
-                chat_id,
-                PERSONAL_TEXT,
-                parse_mode="HTML",
-                reply_markup=personal_submenu(),
-            )
+            safe_send_message(chat_id, PERSONAL_TEXT, parse_mode='HTML', reply_markup=personal_submenu())
             return
 
         if text == "🎧 Онлайн консультация":
-            safe_send_message(
-                chat_id, CONSULT_TEXT, parse_mode="HTML", reply_markup=consult_submenu()
-            )
+            safe_send_message(chat_id, CONSULT_TEXT, parse_mode='HTML', reply_markup=consult_submenu())
             return
 
         if text == "📩 Написать мне":
             user_states[user_id] = "waiting_for_message"
-            safe_send_message(
-                chat_id, CONTACT_TEXT, parse_mode="HTML", reply_markup=contact_submenu()
-            )
+            safe_send_message(chat_id, CONTACT_TEXT, parse_mode='HTML', reply_markup=contact_submenu())
             bot.register_next_step_handler(message, forward_to_trainer)
             return
 
@@ -438,41 +422,39 @@ def handle_messages(message):
             chat_id,
             "❓ Я тебя не понял. Воспользуйся кнопками меню ⬇️\n\n"
             "💡 Чтобы написать мне лично — нажми '📩 Написать мне'",
-            reply_markup=main_menu(),
+            reply_markup=main_menu()
         )
-
+        
     except Exception as e:
         logger.error(f"Ошибка в handle_messages: {e}")
-
 
 # ========================================
 # ========== ПЕРЕСЫЛКА ТРЕНЕРУ ==========
 # ========================================
 
-
 def forward_to_trainer(message):
     """Пересылает сообщение тренеру"""
     user_id = message.from_user.id
-
+    
     # Проверяем кнопку "Назад"
     if message.text == "🔙 Назад в главное меню":
         user_states.pop(user_id, None)
         safe_send_message(message.chat.id, "🔁 Главное меню:", reply_markup=main_menu())
         return
-
+    
     user = message.from_user
-    user_info = (
-        f"{user.first_name} (@{user.username})" if user.username else user.first_name
-    )
-
+    user_info = f"{user.first_name} (@{user.username})" if user.username else user.first_name
+    
     # Проверяем текст
     if not message.text:
         safe_send_message(
-            message.chat.id, "❓ Напиши текст сообщения.", reply_markup=main_menu()
+            message.chat.id,
+            "❓ Напиши текст сообщения.",
+            reply_markup=main_menu()
         )
         user_states.pop(user_id, None)
         return
-
+    
     # Отправляем тренеру
     safe_send_message(
         YOUR_TELEGRAM_ID,
@@ -481,44 +463,40 @@ def forward_to_trainer(message):
         f"🆔 ID: `{user.id}`\n"
         f"📝 **Текст:**\n{message.text}\n\n"
         f"🕐 {time.strftime('%d.%m.%Y %H:%M')}",
-        parse_mode="Markdown",
+        parse_mode='Markdown'
     )
-
+    
     # Подтверждение пользователю
     safe_send_message(
         message.chat.id,
         "✅ **Сообщение отправлено!**\n\n"
         "Я отвечу в ближайшее время (обычно 2-4 часа).",
-        parse_mode="Markdown",
-        reply_markup=main_menu(),
+        parse_mode='Markdown',
+        reply_markup=main_menu()
     )
-
+    
     user_states.pop(user_id, None)
-
 
 # ========================================
 # ========== МЕДИА-ФАЙЛЫ ==========
 # ========================================
 
-
-@bot.message_handler(content_types=["photo", "video", "document", "voice", "audio"])
+@bot.message_handler(content_types=['photo', 'video', 'document', 'voice', 'audio'])
 def handle_media(message):
     """Обработка медиа-файлов"""
     user_id = message.from_user.id
-
+    
     if user_id not in user_states or user_states[user_id] != "waiting_for_message":
         safe_send_message(
             message.chat.id,
             "❓ Сначала нажми '📩 Написать мне'",
-            reply_markup=main_menu(),
+            reply_markup=main_menu()
         )
         return
-
+    
     user = message.from_user
-    user_info = (
-        f"{user.first_name} (@{user.username})" if user.username else user.first_name
-    )
-
+    user_info = f"{user.first_name} (@{user.username})" if user.username else user.first_name
+    
     # Определяем тип медиа
     if message.photo:
         media_type = "📷 Фото"
@@ -542,31 +520,33 @@ def handle_media(message):
         send_func = bot.send_audio
     else:
         return
-
+    
     try:
         caption = f"📩 {media_type} от {user_info}\n🆔 ID: `{user.id}`"
         if message.caption:
             caption += f"\n\n📝 Текст: {message.caption}"
-
-        send_func(YOUR_TELEGRAM_ID, file_id, caption=caption, parse_mode="Markdown")
-
+        
+        send_func(YOUR_TELEGRAM_ID, file_id, caption=caption, parse_mode='Markdown')
+        
         safe_send_message(
-            message.chat.id, f"✅ {media_type} отправлено!", reply_markup=main_menu()
+            message.chat.id,
+            f"✅ {media_type} отправлено!",
+            reply_markup=main_menu()
         )
         user_states.pop(user_id, None)
-
+        
     except Exception as e:
         logger.error(f"Ошибка при пересылке медиа: {e}")
         safe_send_message(
-            message.chat.id, "❌ Не удалось отправить файл.", reply_markup=main_menu()
+            message.chat.id,
+            "❌ Не удалось отправить файл.",
+            reply_markup=main_menu()
         )
         user_states.pop(user_id, None)
-
 
 # ========================================
 # ========== ОПЛАТА ==========
 # ========================================
-
 
 def create_invoice(chat_id, product_key):
     """Создает счет на оплату только через СБП"""
@@ -574,24 +554,28 @@ def create_invoice(chat_id, product_key):
     if not product:
         safe_send_message(chat_id, "❌ Товар не найден.")
         return
-
+    
     # Проверка токена провайдера
     if not PROVIDER_TOKEN:
         safe_send_message(
             chat_id,
             f"❌ Оплата временно недоступна. Напишите @{YOUR_USERNAME}",
-            reply_markup=main_menu(),
+            reply_markup=main_menu()
         )
         return
-
+    
     try:
         price = int(product["price"])
         prices = [types.LabeledPrice(label=product["name"], amount=price)]
-
+        
         # ========== ИЗМЕНЕНИЕ: Добавлен параметр для СБП ==========
         # Создаем платеж с явным указанием СБП через provider_data
-        provider_data = {"payment_method_data": {"type": "sbp"}}
-
+        provider_data = {
+            "payment_method_data": {
+                "type": "sbp"
+            }
+        }
+        
         bot.send_invoice(
             chat_id,
             title=product["name"],
@@ -605,40 +589,39 @@ def create_invoice(chat_id, product_key):
             need_phone_number=False,
             need_email=False,
             need_shipping_address=False,
-            provider_data=provider_data,  # 👈 КЛЮЧЕВОЙ ПАРАМЕТР ДЛЯ СБП
+            provider_data=provider_data  # 👈 КЛЮЧЕВОЙ ПАРАМЕТР ДЛЯ СБП
         )
         logger.info(f"Счет создан для {chat_id}: {product_key} (СБП)")
-
+        
     except Exception as e:
         error_msg = str(e)
         logger.error(f"Ошибка при создании счета: {error_msg}")
-
+        
         # Отправляем сообщение пользователю
         safe_send_message(
             chat_id,
             f"❌ Ошибка при создании счета. Попробуйте позже.\n"
             f"Если ошибка повторяется, напишите @{YOUR_USERNAME}",
-            reply_markup=main_menu(),
+            reply_markup=main_menu()
         )
-
+        
         # Уведомляем тренера о неудаче
         try:
             user_info = bot.get_chat(chat_id)
             user_name = user_info.first_name or "Пользователь"
             if user_info.username:
                 user_name = f"{user_name} (@{user_info.username})"
-
+            
             amount = product["price"] / 100
             notify_trainer_payment_failed(
                 user_id=chat_id,
                 user_name=user_name,
                 product_name=product["name"],
                 amount=int(amount),
-                error_message=error_msg[:200],
+                error_message=error_msg[:200]
             )
         except Exception as notify_error:
             logger.error(f"Не удалось отправить уведомление тренеру: {notify_error}")
-
 
 @bot.pre_checkout_query_handler(func=lambda query: True)
 def process_pre_checkout(pre_checkout_query):
@@ -649,68 +632,64 @@ def process_pre_checkout(pre_checkout_query):
     except Exception as e:
         error_msg = str(e)
         logger.error(f"Ошибка в pre_checkout: {error_msg}")
-
+        
         bot.answer_pre_checkout_query(
             pre_checkout_query.id,
             ok=False,
-            error_message="Ошибка обработки платежа. Попробуйте позже.",
+            error_message="Ошибка обработки платежа. Попробуйте позже."
         )
-
+        
         # Уведомляем тренера о неудаче
         try:
             user = pre_checkout_query.from_user
-            user_name = (
-                f"{user.first_name} (@{user.username})"
-                if user.username
-                else user.first_name
-            )
-
+            user_name = f"{user.first_name} (@{user.username})" if user.username else user.first_name
+            
             payload = pre_checkout_query.invoice_payload
             product_key = payload.replace("product_", "") if payload else "unknown"
             product = PRODUCTS.get(product_key, {})
             product_name = product.get("name", "Неизвестный товар")
-
+            
             total_amount = 0
-            if hasattr(pre_checkout_query, "invoice"):
+            if hasattr(pre_checkout_query, 'invoice'):
                 total_amount = pre_checkout_query.invoice.total_amount / 100
-
+            
             notify_trainer_payment_failed(
                 user_id=user.id,
                 user_name=user_name,
                 product_name=product_name,
                 amount=int(total_amount),
-                error_message=f"Pre-checkout ошибка: {error_msg[:200]}",
+                error_message=f"Pre-checkout ошибка: {error_msg[:200]}"
             )
         except Exception as notify_error:
             logger.error(f"Не удалось отправить уведомление тренеру: {notify_error}")
 
-
-@bot.message_handler(content_types=["successful_payment"])
+@bot.message_handler(content_types=['successful_payment'])
 def process_successful_payment(message):
     """Обработка успешной оплаты"""
     try:
         payment_info = message.successful_payment
         payload = payment_info.invoice_payload
         amount = payment_info.total_amount // 100
-
+        
         # Получаем товар
         product_key = payload.replace("product_", "")
         product = PRODUCTS.get(product_key, {})
-
+        
         if not product:
             logger.error(f"Товар не найден: {product_key}")
             safe_send_message(
                 message.chat.id,
                 "❌ Товар не найден. Свяжитесь с поддержкой.",
-                reply_markup=main_menu(),
+                reply_markup=main_menu()
             )
             return
-
+        
         # Текст для пользователя
-        delivery_text = product.get("delivery_text", "🎉 Спасибо за оплату!").format(
-            YOUR_USERNAME
-        )
-
+        delivery_text = product.get(
+            "delivery_text",
+            "🎉 Спасибо за оплату!"
+        ).format(YOUR_USERNAME)
+        
         # Уведомление пользователю
         safe_send_message(
             message.chat.id,
@@ -719,18 +698,14 @@ def process_successful_payment(message):
             f"💰 {amount} руб.\n"
             f"💳 Способ оплаты: СБП\n\n"
             f"{delivery_text}",
-            parse_mode="Markdown",
-            reply_markup=main_menu(),
+            parse_mode='Markdown',
+            reply_markup=main_menu()
         )
-
+        
         # Уведомление тренеру
         user = message.from_user
-        user_info = (
-            f"{user.first_name} (@{user.username})"
-            if user.username
-            else user.first_name
-        )
-
+        user_info = f"{user.first_name} (@{user.username})" if user.username else user.first_name
+        
         safe_send_message(
             YOUR_TELEGRAM_ID,
             f"💰 **НОВАЯ ОПЛАТА (СБП)!**\n\n"
@@ -740,54 +715,45 @@ def process_successful_payment(message):
             f"💰 {amount} руб.\n"
             f"💳 Способ: СБП\n"
             f"🕐 {time.strftime('%d.%m.%Y %H:%M')}",
-            parse_mode="Markdown",
+            parse_mode='Markdown'
         )
-
+        
         logger.info(f"Оплата получена: {user.id} - {product_key} - {amount} руб. (СБП)")
-
+        
     except Exception as e:
         error_msg = str(e)
         logger.error(f"Ошибка в обработке платежа: {error_msg}")
-
+        
         safe_send_message(
             message.chat.id,
             f"❌ Ошибка обработки платежа. Напишите @{YOUR_USERNAME}",
-            reply_markup=main_menu(),
+            reply_markup=main_menu()
         )
-
+        
         # Уведомляем тренера о неудаче
         try:
             user = message.from_user
-            user_name = (
-                f"{user.first_name} (@{user.username})"
-                if user.username
-                else user.first_name
-            )
-
-            if hasattr(message, "successful_payment"):
+            user_name = f"{user.first_name} (@{user.username})" if user.username else user.first_name
+            
+            if hasattr(message, 'successful_payment'):
                 payload = message.successful_payment.invoice_payload
                 product_key = payload.replace("product_", "") if payload else "unknown"
                 product = PRODUCTS.get(product_key, {})
                 product_name = product.get("name", "Неизвестный товар")
-                amount = (
-                    message.successful_payment.total_amount // 100
-                    if hasattr(message.successful_payment, "total_amount")
-                    else 0
-                )
+                amount = message.successful_payment.total_amount // 100 if hasattr(message.successful_payment, 'total_amount') else 0
             else:
                 product_name = "Неизвестный товар"
                 amount = 0
-
+            
             notify_trainer_payment_failed(
                 user_id=user.id,
                 user_name=user_name,
                 product_name=product_name,
                 amount=amount,
-                error_message=f"Ошибка обработки: {error_msg[:200]}",
+                error_message=f"Ошибка обработки: {error_msg[:200]}"
             )
         except Exception as notify_error:
             logger.error(f"Не удалось отправить уведомление тренеру: {notify_error}")
-
 
 # ========================================
 # ========== ЗАПУСК ==========
@@ -799,9 +765,7 @@ if __name__ == "__main__":
         print("🤖 ФИТНЕС-БОТ ЗАПУЩЕН!")
         print("=" * 50)
         print(f"👤 Тренер: @{YOUR_USERNAME}")
-        print(
-            f"💳 Провайдер: {'✅ Боевой' if PROVIDER_TOKEN and not PROVIDER_TOKEN.startswith('test_') else '🧪 Тестовый'}"
-        )
+        print(f"💳 Провайдер: {'✅ Боевой' if PROVIDER_TOKEN and not PROVIDER_TOKEN.startswith('test_') else '🧪 Тестовый'}")
         print("💳 Способ оплаты: ТОЛЬКО СБП")
         print("=" * 50)
         print("📌 Команды:")
@@ -810,19 +774,22 @@ if __name__ == "__main__":
         print("=" * 50)
         print("🔄 Бот работает...")
         print("=" * 50)
-
+        
         # Удаляем вебхук перед запуском
         try:
             bot.delete_webhook()
             logger.info("✅ Webhook удален")
         except Exception as e:
             logger.warning(f"Не удалось удалить webhook: {e}")
-
+        
         # Запускаем бота
         bot.infinity_polling(
-            timeout=60, long_polling_timeout=30, interval=0, skip_pending=True
+            timeout=60,
+            long_polling_timeout=30,
+            interval=0,
+            skip_pending=True
         )
-
+        
     except KeyboardInterrupt:
         print("\n🛑 Бот остановлен")
         sys.exit(0)
