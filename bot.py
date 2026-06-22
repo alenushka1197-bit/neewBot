@@ -4,27 +4,18 @@ import time
 import os
 import sys
 import logging
-import json
 from datetime import datetime
 from dotenv import load_dotenv
-from logging.handlers import RotatingFileHandler
 
 # ========================================
 # ========== НАСТРОЙКА ЛОГГИРОВАНИЯ ==========
 # ========================================
 
-# Настройка ротации логов
-handler = RotatingFileHandler(
-    'bot.log',
-    maxBytes=10*1024*1024,  # 10 MB
-    backupCount=5
-)
-handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-
 logging.basicConfig(
     level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        handler,
+        logging.FileHandler('bot.log'),
         logging.StreamHandler()
     ]
 )
@@ -60,58 +51,58 @@ bot = telebot.TeleBot(BOT_TOKEN, parse_mode=None)
 user_states = {}
 
 # ========================================
-# ========== ТОВАРЫ (ЦЕНЫ В РУБЛЯХ) ==========
+# ========== ТОВАРЫ ==========
 # ========================================
 
 PRODUCTS = {
     # Программы тренировок
     "program_beginner": {
         "name": "Индивидуальная программа тренировок и питания",
-        "price": 3500,  # 3 500 рублей
+        "price": 350000,
         "description": "Индивидуальная программа тренировок и питания под ваши цели.",
         "delivery_text": "🎉 Спасибо за покупку программы тренировок и питания! Напиши мне в ЛС: @{} и я отправлю программу в течение 24 часов."
     },
     "program_middle": {
         "name": "Программа для среднего уровня",
-        "price": 14900,  # 14 900 рублей
+        "price": 14900,
         "description": "Программа для тренирующихся 3-12 месяцев. 6 недель, прогрессия нагрузок.",
         "delivery_text": "🎉 Спасибо за покупку программы для среднего уровня! Напиши мне в ЛС: @{} и я отправлю программу в течение 24 часов."
     },
     "program_advanced": {
         "name": "Программа для спортсменов",
-        "price": 19900,  # 19 900 рублей
+        "price": 19900,
         "description": "Продвинутая программа с периодизацией. Для опытных спортсменов.",
         "delivery_text": "🎉 Спасибо за покупку программы для спортсменов! Напиши мне в ЛС: @{} и я свяжусь с тобой для индивидуальной настройки."
     },
     # Личное ведение
     "personal_1month": {
         "name": "Личное ведение — 1 месяц",
-        "price": 12000,  # 12 000 рублей
+        "price": 1200000,
         "description": "Индивидуальное сопровождение на месяц. Программа, питание, обратная связь.",
         "delivery_text": "🎉 Ты приобрел месяц личного ведения! Напиши мне в ЛС: @{} чтобы начать работу."
     },
     "personal_3month": {
         "name": "Личное ведение — 3 месяца",
-        "price": 30000,  # 30 000 рублей
+        "price": 3000000,
         "description": "Полное сопровождение на 3 месяца.",
         "delivery_text": "🎉 Ты выбрал 3 месяца личного ведения! Напиши мне в ЛС: @{} и мы начнём трансформацию!"
     },
     "personal_6month": {
         "name": "Личное ведение — 6 месяцев",
-        "price": 54000,  # 54 000 рублей
+        "price": 5400000,
         "description": "Полная трансформация за полгода.",
         "delivery_text": "🎉 Полгода личного ведения — это мощный шаг к новому себе! Напиши мне в ЛС: @{} и мы начнём!"
     },
     "personal_12month": {
         "name": "Личное ведение — 12 месяцев",
-        "price": 108000,  # 108 000 рублей
+        "price": 10800000,
         "description": "Максимальный тариф. Полная трансформация за год.",
         "delivery_text": "🎉 Год личного ведения — это мощный шаг к новому себе! Напиши мне в ЛС: @{} и мы начнём!"
     },
     # Онлайн консультация
     "consult_video": {
         "name": "Онлайн консультация",
-        "price": 4000,  # 4 000 рублей
+        "price": 400000,
         "description": 'Онлайн консультация "Разбор под ключ"',
         "delivery_text": "🎉 Оплата за онлайн консультацию получена! Напиши мне в ЛС: @{} и мы начнём!"
     },
@@ -210,8 +201,8 @@ def programs_submenu():
     """Подменю Программы тренировок"""
     keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     btn1 = types.KeyboardButton("🔹 Индивидуальная (3 500₽)")
-    btn2 = types.KeyboardButton("🔹 Средний уровень (14 900₽)")
-    btn3 = types.KeyboardButton("🔹 Спортсмен (19 900₽)")
+    btn2 = types.KeyboardButton("🔹 Средний уровень (149₽)")
+    btn3 = types.KeyboardButton("🔹 Спортсмен (199₽)")
     btn_back = types.KeyboardButton("🔙 Назад в главное меню")
     keyboard.add(btn1, btn_back)
     return keyboard
@@ -260,7 +251,7 @@ def safe_send_message(chat_id, text, parse_mode='HTML', reply_markup=None):
         return None
 
 # ========================================
-# ========== УВЕДОМЛЕНИЕ О НЕУДАЧНОЙ ОПЛАТЕ ==========
+# ========== НОВАЯ ФУНКЦИЯ: УВЕДОМЛЕНИЕ О НЕУДАЧНОЙ ОПЛАТЕ ==========
 # ========================================
 
 def notify_trainer_payment_failed(user_id, user_name, product_name, amount, error_message):
@@ -350,30 +341,6 @@ def send_help(message):
         reply_markup=main_menu()
     )
 
-@bot.message_handler(commands=['status'])
-def check_status(message):
-    """Проверка статуса бота (только для тренера)"""
-    if message.from_user.id != YOUR_TELEGRAM_ID:
-        safe_send_message(message.chat.id, "⛔ Доступ запрещен")
-        return
-    
-    status_text = f"""
-📊 **Статус бота**
-
-✅ Бот активен
-👤 ID тренера: {YOUR_TELEGRAM_ID}
-💳 Провайдер: {'✅ Настроен' if PROVIDER_TOKEN else '❌ Не настроен'}
-💳 Способ оплаты: СБП
-📦 Товаров: {len(PRODUCTS)}
-📝 Состояний пользователей: {len(user_states)}
-🕐 Время: {time.strftime('%d.%m.%Y %H:%M:%S')}
-"""
-    safe_send_message(
-        message.chat.id,
-        status_text,
-        parse_mode='Markdown'
-    )
-
 # ========================================
 # ========== ОБРАБОТЧИК ТЕКСТА ==========
 # ========================================
@@ -420,11 +387,11 @@ def handle_messages(message):
             create_invoice(chat_id, "program_beginner")
             return
 
-        if text == "🔹 Средний уровень (14 900₽)":
+        if text == "🔹 Средний уровень (149₽)":
             create_invoice(chat_id, "program_middle")
             return
 
-        if text == "🔹 Спортсмен (19 900₽)":
+        if text == "🔹 Спортсмен (199₽)":
             create_invoice(chat_id, "program_advanced")
             return
 
@@ -582,12 +549,13 @@ def handle_media(message):
 # ========================================
 
 def create_invoice(chat_id, product_key):
-    """Создает счет на оплату с поддержкой СБП"""
+    """Создает счет на оплату только через СБП"""
     product = PRODUCTS.get(product_key)
     if not product:
         safe_send_message(chat_id, "❌ Товар не найден.")
         return
     
+    # Проверка токена провайдера
     if not PROVIDER_TOKEN:
         safe_send_message(
             chat_id,
@@ -597,34 +565,21 @@ def create_invoice(chat_id, product_key):
         return
     
     try:
-        # Цена в рублях, переводим в копейки для API
-        price_rub = int(product["price"])
-        price_kop = price_rub * 100
+        price = int(product["price"])
+        prices = [types.LabeledPrice(label=product["name"], amount=price)]
         
-        prices = [types.LabeledPrice(label=product["name"], amount=price_kop)]
-        
-        # Подготовка данных для СБП с чеком
+        # ========== ИЗМЕНЕНИЕ: Добавлен параметр для СБП ==========
+        # Создаем платеж с явным указанием СБП через provider_data
         provider_data = {
-            "receipt": {
-                "items": [{
-                    "description": product["name"][:64],  # Максимум 64 символа
-                    "quantity": "1.00",
-                    "amount": {
-                        "value": str(price_rub),
-                        "currency": "RUB"
-                    },
-                    "vat_code": 1,  # НДС 20%
-                    "payment_mode": "full_payment",
-                    "payment_subject": "service"  # Услуга
-                }]
+            "payment_method_data": {
+                "type": "sbp"
             }
         }
         
-        # Отправляем инвойс с поддержкой СБП
         bot.send_invoice(
             chat_id,
-            title=product["name"][:64],  # Ограничение Telegram
-            description=product["description"][:255],  # Ограничение Telegram
+            title=product["name"],
+            description=product["description"],
             invoice_payload=f"product_{product_key}",
             provider_token=PROVIDER_TOKEN,
             currency="RUB",
@@ -634,10 +589,9 @@ def create_invoice(chat_id, product_key):
             need_phone_number=False,
             need_email=False,
             need_shipping_address=False,
-            provider_data=json.dumps(provider_data)  # Поддержка СБП
+            provider_data=provider_data  # 👈 КЛЮЧЕВОЙ ПАРАМЕТР ДЛЯ СБП
         )
-        
-        logger.info(f"Счет создан для {chat_id}: {product_key}, сумма: {price_rub} руб. (СБП)")
+        logger.info(f"Счет создан для {chat_id}: {product_key} (СБП)")
         
     except Exception as e:
         error_msg = str(e)
@@ -658,11 +612,12 @@ def create_invoice(chat_id, product_key):
             if user_info.username:
                 user_name = f"{user_name} (@{user_info.username})"
             
+            amount = product["price"] / 100
             notify_trainer_payment_failed(
                 user_id=chat_id,
                 user_name=user_name,
                 product_name=product["name"],
-                amount=product["price"],
+                amount=int(amount),
                 error_message=error_msg[:200]
             )
         except Exception as notify_error:
@@ -672,31 +627,8 @@ def create_invoice(chat_id, product_key):
 def process_pre_checkout(pre_checkout_query):
     """Предварительная проверка оплаты"""
     try:
-        # Проверяем, что товар существует
-        payload = pre_checkout_query.invoice_payload
-        if not payload or not payload.startswith("product_"):
-            bot.answer_pre_checkout_query(
-                pre_checkout_query.id,
-                ok=False,
-                error_message="Неверный товар"
-            )
-            logger.warning(f"Pre-checkout отклонен: неверный payload {payload}")
-            return
-        
-        product_key = payload.replace("product_", "")
-        if product_key not in PRODUCTS:
-            bot.answer_pre_checkout_query(
-                pre_checkout_query.id,
-                ok=False,
-                error_message="Товар не найден"
-            )
-            logger.warning(f"Pre-checkout отклонен: товар {product_key} не найден")
-            return
-        
-        # Все хорошо
         bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
-        logger.info(f"Pre-checkout одобрен для {pre_checkout_query.from_user.id}, товар: {product_key}")
-        
+        logger.info(f"Pre-checkout одобрен для {pre_checkout_query.from_user.id}")
     except Exception as e:
         error_msg = str(e)
         logger.error(f"Ошибка в pre_checkout: {error_msg}")
@@ -713,13 +645,13 @@ def process_pre_checkout(pre_checkout_query):
             user_name = f"{user.first_name} (@{user.username})" if user.username else user.first_name
             
             payload = pre_checkout_query.invoice_payload
-            product_key = payload.replace("product_", "") if payload and payload.startswith("product_") else "unknown"
+            product_key = payload.replace("product_", "") if payload else "unknown"
             product = PRODUCTS.get(product_key, {})
             product_name = product.get("name", "Неизвестный товар")
             
             total_amount = 0
             if hasattr(pre_checkout_query, 'invoice'):
-                total_amount = pre_checkout_query.invoice.total_amount // 100
+                total_amount = pre_checkout_query.invoice.total_amount / 100
             
             notify_trainer_payment_failed(
                 user_id=user.id,
@@ -737,7 +669,7 @@ def process_successful_payment(message):
     try:
         payment_info = message.successful_payment
         payload = payment_info.invoice_payload
-        amount = payment_info.total_amount // 100  # Переводим из копеек в рубли
+        amount = payment_info.total_amount // 100
         
         # Получаем товар
         product_key = payload.replace("product_", "")
@@ -805,7 +737,7 @@ def process_successful_payment(message):
             
             if hasattr(message, 'successful_payment'):
                 payload = message.successful_payment.invoice_payload
-                product_key = payload.replace("product_", "") if payload and payload.startswith("product_") else "unknown"
+                product_key = payload.replace("product_", "") if payload else "unknown"
                 product = PRODUCTS.get(product_key, {})
                 product_name = product.get("name", "Неизвестный товар")
                 amount = message.successful_payment.total_amount // 100 if hasattr(message.successful_payment, 'total_amount') else 0
@@ -823,32 +755,6 @@ def process_successful_payment(message):
         except Exception as notify_error:
             logger.error(f"Не удалось отправить уведомление тренеру: {notify_error}")
 
-@bot.message_handler(content_types=['failed_payment'])
-def process_failed_payment(message):
-    """Обработка неудачной оплаты"""
-    try:
-        user = message.from_user
-        user_name = f"{user.first_name} (@{user.username})" if user.username else user.first_name
-        
-        safe_send_message(
-            YOUR_TELEGRAM_ID,
-            f"❌ **НЕУДАЧНАЯ ОПЛАТА**\n\n"
-            f"👤 {user_name}\n"
-            f"🆔 ID: {user.id}\n"
-            f"🕐 {time.strftime('%d.%m.%Y %H:%M')}",
-            parse_mode='Markdown'
-        )
-        
-        safe_send_message(
-            message.chat.id,
-            "❌ Оплата не прошла. Попробуйте еще раз или выберите другой способ оплаты.",
-            reply_markup=main_menu()
-        )
-        logger.info(f"Неудачная оплата от пользователя {user.id}")
-        
-    except Exception as e:
-        logger.error(f"Ошибка в process_failed_payment: {e}")
-
 # ========================================
 # ========== ЗАПУСК ==========
 # ========================================
@@ -863,9 +769,8 @@ if __name__ == "__main__":
         print("💳 Способ оплаты: ТОЛЬКО СБП")
         print("=" * 50)
         print("📌 Команды:")
-        print("  /start  - Главное меню")
-        print("  /help   - Помощь")
-        print("  /status - Статус бота (только для тренера)")
+        print("  /start - Главное меню")
+        print("  /help  - Помощь")
         print("=" * 50)
         print("🔄 Бот работает...")
         print("=" * 50)
