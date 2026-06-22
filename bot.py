@@ -213,7 +213,7 @@ def programs_submenu():
     btn2 = types.KeyboardButton("🔹 Средний уровень (14 900₽)")
     btn3 = types.KeyboardButton("🔹 Спортсмен (19 900₽)")
     btn_back = types.KeyboardButton("🔙 Назад в главное меню")
-    keyboard.add(btn1, btn2, btn3, btn_back)
+    keyboard.add(btn1, btn_back)
     return keyboard
 
 def personal_submenu():
